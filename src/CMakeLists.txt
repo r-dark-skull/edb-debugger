@@ -42,6 +42,9 @@ set(edb_SRCS
 	DialogArguments.cpp
 	DialogArguments.h
 	DialogArguments.ui
+	DialogBreakpoints.cpp
+	DialogBreakpoints.h
+	DialogBreakpoints.ui
 	DialogAttach.cpp
 	DialogAttach.h
 	DialogAttach.ui
@@ -169,7 +172,7 @@ set(edb_SRCS
 	${PROJECT_SOURCE_DIR}/include/util/Math.h
 	${PROJECT_SOURCE_DIR}/include/util/String.h
 	${PROJECT_SOURCE_DIR}/include/util/Error.h
-	${PROJECT_SOURCE_DIR}/include/version.h
+	${PROJECT_SOURCE_DIR}/include/version.h.in
 )
 
 if(TARGET_ARCH_FAMILY_X86)
@@ -252,14 +255,16 @@ if(UNIX AND TARGET_ARCH_FAMILY_X86)
 		target_link_libraries(edb
 			gdtoa-desktop
 		)
-		
+
 		add_dependencies(edb gdtoa_h)
 	endif()
 endif()
 
-target_compile_definitions(edb PRIVATE
-	-DDEFAULT_PLUGIN_PATH=\"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/edb\"
-)
+if (NOT DEFINED DEFAULT_PLUGIN_DIR)
+	message(STATUS "Using default value of EDB Plugin directory")
+	set(DEFAULT_PLUGIN_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/edb")
+endif()
+target_compile_definitions(edb PRIVATE -DDEFAULT_PLUGIN_PATH="${DEFAULT_PLUGIN_DIR}")
 
 target_link_libraries(edb
 	${CAPSTONE_LIBRARIES}

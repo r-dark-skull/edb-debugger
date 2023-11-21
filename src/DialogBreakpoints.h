@@ -1,6 +1,6 @@
 /*
-Copyright (C) 2006 - 2015 Evan Teran
-                          evan.teran@gmail.com
+Copyright (C) 2006 - 2023 Evan Teran
+						  evan.teran@gmail.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,9 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "ui_DialogBreakpoints.h"
 #include <QDialog>
 
-namespace BreakpointManagerPlugin {
-
-class DialogBreakpoints : public QDialog {
+class DialogBreakpoints final : public QDialog {
 	Q_OBJECT
 
 public:
@@ -47,7 +45,5 @@ private:
 private:
 	Ui::DialogBreakpoints ui;
 };
-
-}
 
 #endif

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2006 - 2015 Evan Teran
+Copyright (C) 2006 - 2023 Evan Teran
 						  evan.teran@gmail.com
 
 This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "DialogAbout.h"
 #include "DialogArguments.h"
 #include "DialogAttach.h"
+#include "DialogBreakpoints.h"
 #include "DialogMemoryRegions.h"
 #include "DialogOpenProgram.h"
 #include "DialogOptions.h"
@@ -638,6 +639,11 @@ QString Debugger::createTty() {
 				proc_args << "--hide-menubar"
 						  << "--title" << tr("edb output")
 						  << "--";
+			} else if (command_info.fileName() == "xfce4-terminal") {
+				proc_args << "--hide-menubar"
+						  << "--title" << tr("edb output")
+						  << "--hold"
+						  << "-x";
 			} else if (command_info.fileName() == "konsole") {
 				proc_args << "--hide-menubar"
 						  << "--title" << tr("edb output")
@@ -2987,7 +2993,7 @@ void Debugger::setInitialDebuggerState() {
 	reenableBreakpointStep_ = nullptr;
 
 #ifdef Q_OS_LINUX
-	debugPointer_            = 0;
+	debugPointer_             = 0;
 	dynamicInfoBreakpointSet_ = false;
 #endif
 
@@ -3606,4 +3612,16 @@ void Debugger::on_action_Help_triggered() {
 //------------------------------------------------------------------------------
 QLabel *Debugger::statusLabel() const {
 	return status_;
+}
+
+//------------------------------------------------------------------------------
+// Name: on_action_Breakpoints_triggered
+// Desc:
+//------------------------------------------------------------------------------
+void Debugger::on_action_Breakpoints_triggered() {
+	if (!breakpointDialog_) {
+		breakpointDialog_ = new DialogBreakpoints(edb::v1::debugger_ui);
+	}
+
+	breakpointDialog_->show();
 }
